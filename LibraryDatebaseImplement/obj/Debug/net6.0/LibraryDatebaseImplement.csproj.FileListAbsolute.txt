@@ -1,0 +1,34 @@
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.csproj.AssemblyReference.cache
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.GeneratedMSBuildEditorConfig.editorconfig
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.AssemblyInfoInputs.cache
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.AssemblyInfo.cs
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.csproj.CoreCompileInputs.cache
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryDatebaseImplement.deps.json
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryDatebaseImplement.runtimeconfig.json
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryDatebaseImplement.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\bin\Debug\net6.0\ref\LibraryDatebaseImplement.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryDatebaseImplement.pdb
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryContracts.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryContracts.pdb
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.csproj.CopyComplete
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\ref\LibraryDatebaseImplement.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.pdb
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.genruntimeconfig.cache
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryDatebaseImplement.deps.json
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryDatebaseImplement.runtimeconfig.json
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryDatebaseImplement.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\bin\Debug\net6.0\ref\LibraryDatebaseImplement.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryDatebaseImplement.pdb
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryContracts.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\bin\Debug\net6.0\LibraryContracts.pdb
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.csproj.AssemblyReference.cache
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.GeneratedMSBuildEditorConfig.editorconfig
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.AssemblyInfoInputs.cache
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.AssemblyInfo.cs
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.csproj.CoreCompileInputs.cache
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.csproj.CopyComplete
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\ref\LibraryDatebaseImplement.dll
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.pdb
+F:\!Учеба\3 КУРС\ПиАПС\курсач\LibraryCW — копия\LibraryDatebaseImplement\obj\Debug\net6.0\LibraryDatebaseImplement.genruntimeconfig.cache
