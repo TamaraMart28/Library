@@ -1,0 +1,121 @@
+﻿﻿@{
+    ViewData["Title"] = "Филиал";
+}
+@using LibraryContracts.ViewModels
+@model BranchViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Карта Яндекс</title>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+</head>
+<body>
+    @if (TempData["Message"] != null)
+    {
+        <div style="position: absolute; z-index: 2; width: 80%; left: 50%; transform: translate(-50%, -50%);" id="myBlock" class="fade-out-transition alert alert-danger">
+          @TempData["Message"]
+        </div>
+
+        <style>
+          .fade-out-transition {
+            opacity: 1;
+            transition: opacity 1s;
+          }
+
+          .fade-out-transition.fade-out {
+            opacity: 0;
+          }
+        </style>
+
+        <script>
+          // Через небольшую задержку, добавляем класс для запуска перехода
+          setTimeout(function() {
+            const myBlock = document.getElementById("myBlock");
+            myBlock.classList.add("fade-out");
+          }, 3000);
+
+          // По окончании перехода, убираем блок
+          const myBlock = document.getElementById("myBlock");
+          myBlock.addEventListener("transitionend", function() {
+            myBlock.style.display = "none";
+          });
+        </script>
+    }
+    
+    <div class="text-center">
+        <h3 class="display-4">@ViewData["Title"]</h3>
+    </div>
+
+    <form method="post">
+        <br />
+        <div class="row">
+            <div class="col-4">Адрес:</div>
+            <div class="col-8"><input style="width: 100%" type="text" name="branchAddress" id="branchAddress" value="@Model.Address"/></div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-4">Расписание:</div>
+            <div class="col-8"><input style="width: 100%" type="text" name="branchSchedule" id="branchSchedule" value="@Model.Schedule"/></div>
+        </div>
+        <div class="row" style="display: none;">
+            <div class="col-8"><input type="text" name="branchСoordinate1" id="branchСoordinate1" value="@Model.Сoordinate1"/></div>
+        </div>
+        <br />
+        <div class="row" style="display: none;">
+            <div class="col-8"><input type="text" name="branchСoordinate2" id="branchСoordinate2" value="@Model.Сoordinate2"/></div>
+        </div>
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col-4">Расположение:</div>
+        </div>
+        <div id="map" style="width: 100%; height: 500px"></div>
+    
+        <script type="text/javascript">
+            ymaps.ready(init);
+
+            function init() {
+                var myMap = new ymaps.Map("map", {
+                    center: [54.313104, 48.447307],
+                    zoom: 10
+                });
+
+                var myPlacemark;
+                var c1 = document.getElementById('branchСoordinate1').value;
+                var cc1 = c1.replace(",", ".");
+                var c2 = document.getElementById('branchСoordinate2').value;
+                var cc2 = c2.replace(",", ".");
+                var coords = [parseFloat(cc1), parseFloat(cc2)];
+                myPlacemark = new ymaps.Placemark(coords, {}, {});
+                myMap.geoObjects.add(myPlacemark);
+
+                // Обработчик клика по карте
+                myMap.events.add('click', function (e) {
+                    // Если метка уже есть на карте, удаляем ее
+                    if (myPlacemark) {
+                        myMap.geoObjects.remove(myPlacemark);
+                    }
+                    // Получаем координаты места клика
+                    var coords = e.get('coords');
+                    // Создаем новую метку на карте
+                    myPlacemark = new ymaps.Placemark(coords, {}, {});
+                    // Добавляем метку на карту
+                    myMap.geoObjects.add(myPlacemark);
+                    // Записываем координаты метки в текстовые поля
+                    document.getElementById('branchСoordinate1').value = coords[0];
+                    document.getElementById('branchСoordinate2').value = coords[1];
+                });
+            }
+        </script>
+
+        <br />
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-8">
+                <input class="btn btn-dark" type="submit" value="Изменить" class="btn btn-success" />
+                <a class="btn btn-secondary" asp-action="BranchesAdmin">Отмена</a>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

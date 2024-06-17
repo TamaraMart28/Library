@@ -1,0 +1,320 @@
+﻿﻿@using LibraryContracts.ViewModels
+
+@{
+    ViewData["Title"] = "Адреса";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+</head>
+<body>
+    <div class="text-center">
+        <h2 class="display-4">Наши библиотеки</h2>
+    </div>
+    <div id="map" style="width: 100%; height: 500px"></div>
+    <script type="text/javascript">
+        ymaps.ready(init);
+
+        function init() {
+            // Создание карты
+            var myMap = new ymaps.Map("map", {
+                center: [54.313104, 48.447307],
+                zoom: 5
+            });
+
+            // Получение списка координат маркеров из ViewBag
+            var coordinatesList = JSON.parse('@Html.Raw(ViewBag.CoordinatesListJson)');
+            var infoList = JSON.parse('@Html.Raw(ViewBag.InfoListJson)');
+
+            // Добавление маркеров на карту
+            for (var i = 0; i < coordinatesList.length; i++) {
+                var coordinates = [coordinatesList[i].Item1, coordinatesList[i].Item2];
+                var myPlacemark = new ymaps.Placemark(coordinates, { balloonContent: infoList[i]}, {});
+                myMap.geoObjects.add(myPlacemark);
+            }
+        }
+    </script>
+</body>
+</html>
+
+@*
+@{
+    Layout = null;
+    ViewData["Title"] = "Адреса";
+}
+@model List<BranchViewModel>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - «Потерянная глава»</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LibraryReaderApp.styles.css" asp-append-version="true" />
+    <style>
+        html,
+        body,
+        #container1 {
+            width: 100%;
+            height: 100%;
+        }
+        footer{
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            white-space: nowrap;
+            line-height: 60px;
+        }
+        .popup {
+                position: absolute;
+                transform: translate(-50%, -150%);
+                display: flex;
+                flex-direction: column;
+                min-width: 200px;
+            }
+            .popup-content {
+                padding: 10px;
+                border-radius: 4px;
+                background: #fff;
+                box-shadow: 0 1px 2px 0 rgba(38, 38, 38, 0.2);
+            }
+            .popup-close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 0 5px;
+                font-size: 12px;
+                cursor: pointer;
+            }
+            .popup-tip {
+                width: 0;
+                height: 0;
+                align-self: center;
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-top: 10px solid #fff;
+            }
+            #tooltip {
+				padding: 15px 15px;
+				background: #fff;
+				box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+				border-radius: 4px;
+				display: none;
+				position: fixed;
+				pointer-events: none;
+			}
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Books">Каталог книг</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Branches">Адреса</a>
+                        </li>
+                        @{
+                            if(Session.Reader == null)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="RegisterReader">Зарегистрироваться</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LoginReader">Войти</a>
+                                </li>
+                            }
+                        }
+                        @{
+                            if(Session.Reader != null)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Session.Reader.FullName</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Выйти</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="text-center">
+        <h2 class="display-4">Наши библиотеки</h2>
+    </div>
+    <div id="container1" style="width: 50%; height: 400px; position: absolute; cursor: pointer; position: absolute; left: 25%;"></div>
+    <div id="tooltip"></div>
+    <script src="https://mapgl.2gis.com/api/js/v1"></script>
+        <script>
+            const map = new mapgl.Map('container1', {
+                center: [48.447307, 54.313104],
+                zoom: 11,
+                key: '0baa0c89-b5c7-4092-afb4-d94d3c25a034',
+            });
+            @{
+                string i = "rrr";
+            }
+
+            const marker1 = new mapgl.Marker(map, {
+				coordinates: [48.587285, 54.386395],
+				icon: 'https://docs.2gis.com/img/mapgl/marker.svg',
+			});
+			MapInfo(marker1, '<br/>Адрес: г. Ульяновск, Заволжский р-н, Новый Город м-н, Карбышева, 30<br/>График работы: Вторник-Воскресенье 9:30-20:30, Понедельник - выходной');
+			const marker2 = new mapgl.Marker(map, {
+				coordinates: [48.586095, 54.387736],
+				icon: 'https://docs.2gis.com/img/mapgl/marker.svg',
+			});
+			MapInfo(marker2, '<br/>Адрес: г. Ульяновск, Заволжский р-н, Новый Город м-н, Авиастроителей, 12А<br/>График работы: Вторник-Воскресенье 9:30-20:30, Понедельник - выходной');
+			
+
+            function MapInfo(marker, text) {
+				const tooltipEl = document.getElementById('tooltip');
+				marker.on('mouseover', (event) => {
+					const offset = 5;
+					tooltipEl.style.top = `${event.point[1] + offset}px`;
+					tooltipEl.style.left = `${event.point[0] + offset}px`;
+					tooltipEl.style.display = 'block';
+					tooltipEl.innerHTML = text;
+				});
+
+				marker.on('mouseout', (e) => {
+					tooltipEl.style.display = 'none';
+				});
+			}
+        </script>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - Сеть библиотек «Потерянная глава» - <a asp-area="" asp-controller="Home" asp-action="LoginAdmin">Для админа</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>*@
+
+@*//for (int i = 0; i < @ViewBag.BranchesSize; i++) {
+            //    coordinates[0] = @ViewBag.Branches.Сoordinate1;
+            //    coordinates[1] = @ViewBag.Branches.Сoordinate2;
+            //    const marker = new mapgl.Marker(map, {
+            //        coordinates: coordinates
+            //    });
+
+            //    const popup = new mapgl.HtmlMarker(map, {
+            //        coordinates: marker.getCoordinates(),
+            //        html: `<div class="popup">
+            //            <div class="popup-content">
+            //                @ViewData["Title"]
+            //            </div>
+            //            <div class="popup-close">x</div>
+            //            <div class="popup-tip"></div>
+            //        </div>`,
+            //    });
+
+            //    const popupHtml = popup.getContent();
+            //    hidePopup();
+
+            //    marker.on('click', () => (popupHtml.style.display = 'block'));
+
+            //    popupHtml.querySelector('.popup-close').addEventListener('click', hidePopup);
+            //    map.on('click', hidePopup);
+
+            //    function hidePopup() {
+            //        popupHtml.style.display = 'none';
+            //    }
+            //}*@
+
+@*@{var branches = new List<BranchViewModel>();}
+            @foreach (var item in @Model)
+            {
+                branches.Add(item);
+            }*@
+            
+            
+            @*for (int i = 0; i < @ViewBag.BranchesSize; i++)
+            {
+                const coordinates = new double[2];
+                coordinates[0] = 48.447307;
+                coordinates[1] = 54.313104;
+                const marker = new mapgl.Marker(map, {
+                    coordinates: coordinates
+                });
+
+                const popup = new mapgl.HtmlMarker(map, {
+                    coordinates: marker.getCoordinates(),
+                    html: `<div class="popup">
+                        <div class="popup-content">
+                            item.Address;
+                        </div>
+                        <div class="popup-close">x</div>
+                        <div class="popup-tip"></div>
+                    </div>`,
+                });
+
+                const popupHtml = popup.getContent();
+                hidePopup();
+
+                marker.on('click', () => (popupHtml.style.display = 'block'));
+
+                popupHtml.querySelector('.popup-close').addEventListener('click', hidePopup);
+                map.on('click', hidePopup);
+
+                function hidePopup() {
+                    popupHtml.style.display = 'none';
+                }
+            }*@
+
+@*const coords = [
+                [@ViewBag.number1, @ViewBag.number2],
+                [@ViewBag.number3, @ViewBag.number4]
+            ];
+
+            coords.forEach((coord) => {
+                const marker = new mapgl.Marker(map, {
+                    coordinates: coord,
+                });
+
+                const popup = new mapgl.HtmlMarker(map, {
+                    coordinates: marker.getCoordinates(),
+                    html: `<div class="popup">
+                        <div class="popup-content">
+                            @ViewBag.info[0]
+                        </div>
+                        <div class="popup-close">x</div>
+                        <div class="popup-tip"></div>
+                    </div>`,
+                });
+            @{
+                ViewBag.info[0] = "0";
+                ViewBag.info[1] = "1";
+            }
+
+                const popupHtml = popup.getContent();
+                hidePopup();
+
+                marker.on('click', () => (popupHtml.style.display = 'block'));
+
+                popupHtml.querySelector('.popup-close').addEventListener('click', hidePopup);
+                map.on('click', hidePopup);
+
+                function hidePopup() {
+                    popupHtml.style.display = 'none';
+                }
+            });*@

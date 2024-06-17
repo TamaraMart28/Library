@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Отчет по прочитанным книгам";
+}
+<div class="text-center">
+    <h3 class="display-4">@ViewData["Title"]</h3>
+</div>
+
+<form method="post">
+    <br />
+    <div class="text-center">
+        <label for="date">С </label>
+        <input type="date" id="dateFrom" name="dateFrom" />
+        <label for="date"> по </label>
+        <input type="date" id="dateTo" name="dateTo" />
+        <input type="submit" class="btn btn-dark" asp-route-dateFrom="dateFrom" asp-route-dateTo="dateTo" asp-action="CreateReport" value="Сформировать" />
+    </div>
+</form>

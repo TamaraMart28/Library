@@ -1,0 +1,63 @@
+﻿﻿@{
+    ViewData["Title"] = "RegisterReader";
+}
+
+
+@if (TempData["Message"] != null)
+{
+    <div style="position: absolute; z-index: 2; width: 80%; left: 50%; transform: translate(-50%, -50%);" id="myBlock" class="fade-out-transition alert alert-danger">
+      @TempData["Message"]
+    </div>
+
+    <style>
+      .fade-out-transition {
+        opacity: 1;
+        transition: opacity 1s;
+      }
+
+      .fade-out-transition.fade-out {
+        opacity: 0;
+      }
+    </style>
+
+    <script>
+      // Через небольшую задержку, добавляем класс для запуска перехода
+      setTimeout(function() {
+        const myBlock = document.getElementById("myBlock");
+        myBlock.classList.add("fade-out");
+      }, 3000);
+
+      // По окончании перехода, убираем блок
+      const myBlock = document.getElementById("myBlock");
+      myBlock.addEventListener("transitionend", function() {
+        myBlock.style.display = "none";
+      });
+    </script>
+}
+
+<div class="text-center">
+    <h2 class="display-4">Регистрация</h2>
+</div>
+
+
+<form method="post" style="width: 80%">
+    <br />
+    <div class="row">
+        <div class="col-4">Логин:</div>
+        <div class="col-8" ><input style="width: 100%" type="text" name="login" /></div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-4">Пароль:</div>
+        <div class="col-8" ><input style="width: 100%" type="password" name="password" /></div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-4">ФИО:</div>
+        <div class="col-8" ><input style="width: 100%" type="text" name="fio" /></div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-4"><input type="submit" value="Регистрация" class="btn btn-dark" /></div>
+    </div>
+</form>

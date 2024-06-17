@@ -1,0 +1,164 @@
+﻿@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+@if (TempData["Message"] != null)
+{
+    <div style="position: absolute; z-index: 2; width: 80%; left: 50%; transform: translate(-50%, -50%);" id="myBlock" class="fade-out-transition alert alert-danger">
+      @TempData["Message"]
+    </div>
+
+    <style>
+      .fade-out-transition {
+        opacity: 1;
+        transition: opacity 1s;
+      }
+
+      .fade-out-transition.fade-out {
+        opacity: 0;
+      }
+    </style>
+
+    <script>
+      // Через небольшую задержку, добавляем класс для запуска перехода
+      setTimeout(function() {
+        const myBlock = document.getElementById("myBlock");
+        myBlock.classList.add("fade-out");
+      }, 3000);
+
+      // По окончании перехода, убираем блок
+      const myBlock = document.getElementById("myBlock");
+      myBlock.addEventListener("transitionend", function() {
+        myBlock.style.display = "none";
+      });
+    </script>
+}
+
+<div class="text-center">
+    <h3 class="display-4">@ViewData["Title"]</h3>
+</div>
+
+<div class="container" style="margin-bottom: 20px;">
+    <div class="row">
+        <div class="col-md-6">
+            <br />
+            <h3 class="col-8">Личная информация</h3>
+            <form method="post">
+                <br />
+                <div class="row">
+                    <div class="col-4">Логин:</div>
+                    <div class="col-8">
+                        <input disabled style="width: 100%" type="text" name="login" value="@Session.Reader.Login" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-4">Пароль:</div>
+                    <div class="col-8">
+                        <input disabled style="width: 100%" type="text" name="password" value="@Session.Reader.Password" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-4">ФИО:</div>
+                    <div class="col-8">
+                        <input style="width: 100%" type="text" id="fio" name="fio" value="@Session.Reader.FullName" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <input type="submit" class="col-4 btn btn-dark" asp-route-fio="fio" asp-action="UpdateReader" value="Изменить" />
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <br />
+            <h3 class="col-8">Отчет по прочитанным книгам</h3>
+
+            <form method="post">
+                <br />
+                <div class="text-center">
+                    <label for="date">С  </label>
+                    <input type="date" id="dateFrom" name="dateFrom" />
+                    <label for="date">  по  </label>
+                    <input type="date" id="dateTo" name="dateTo" />
+                    <br />
+                    <input style="margin-top: 20px;" type="submit" class="btn btn-dark" asp-route-dateFrom="dateFrom" asp-route-dateTo="dateTo" asp-action="CreateReport" value="Сформировать" />
+                </div>
+            </form>
+            
+            @*<br />
+            <div style="margin-bottom: 20px;" class="row">
+                <a class="col-4 btn btn-dark"  asp-area="" asp-controller="Home" asp-action="FavoriteBooks">Избранное</a>
+                <div class="col-4"></div>
+                <a class="col-4 btn btn-dark"  asp-area="" asp-controller="Home" asp-action="Report">Получить отчет по прочитанным книгам</a>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <h3 class="col-4">Взятые книги</h3>
+</div>
+<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Адрес библиотеки
+                </th>
+                <th>
+                    Дата взятия
+                </th>
+                <th>
+                    Срок возвращения
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.ReadersBooksDolg)
+            {
+                DateTime dateNow = DateTime.Now;
+                DateTime dateSrok = item.DateOut.AddMonths(1);
+                TimeSpan difference = dateSrok - dateNow;
+                int daysDifference = difference.Days;
+                @if (daysDifference < 10)
+                {
+                    <tr>
+                        <td style="color: red;">
+                            @item.Name
+                        </td>
+                        <td style="color: red;">
+                            @item.Address
+                        </td>
+                        <td style="color: red;">
+                            @item.DateOut.ToShortDateString()
+                        </td>
+                        <td style="color: red;">
+                            @item.Srok
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Address
+                        </td>
+                        <td>
+                            @item.DateOut.ToShortDateString()
+                        </td>
+                        <td>
+                            @item.Srok
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>

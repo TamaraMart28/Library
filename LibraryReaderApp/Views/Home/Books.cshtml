@@ -1,0 +1,153 @@
+﻿@using LibraryContracts.Enums;
+@model IndexViewModel
+@{
+    ViewData["Title"] = "Книги";
+}
+
+<div class="text-center">
+    <h2 style="margin-bottom: 20px;" class="display-4">Новинки</h2>
+</div>
+
+<div style="margin-bottom: 20px;" class="accordion" id="accordionExample" style="background-color: #e8d3b3">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne" style="background-color: #e8d3b3">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        Поиск
+      </button>
+    </h2>
+    <div style="background-color: #e8d3b3" id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <form method="get">
+        <div class="form-inline form-group" style="background-color: #e8d3b3">
+            <label style="margin-bottom: 20px;" class="control-label">Название: </label>
+            <input style="margin-bottom: 20px;" name="name" class="form-control" value="@ViewBag.Name"/>
+
+            <label style="margin-bottom: 20px;" class="control-label">Автор: </label>
+            <input style="margin-bottom: 20px;" name="author" class="form-control" value="@ViewBag.Author"/>
+ 
+            <label class="control-label">Жанр: </label>
+            @*@{
+                List<Genres> genresList = Enum.GetValues(typeof(Genres))
+                            .Cast<Genres>()
+                            .ToList();
+                SelectList genres = new SelectList(genresList, "Name");
+            }
+            <select id="genre" name="genre" asp-items="@genres" class="form-control"></select>
+            <input name="genreinput" class="form-control" value="@ViewBag.Genre"/>*@
+
+            <select id="genre" name="genre" value="@ViewBag.Genre">
+                @foreach (var item in ViewBag.Genres)
+                {
+                    if (item.ToString() == ViewBag.Genre)
+                    {
+                        <option value="@item.ToString()" selected>@item.ToString()</option>
+                    }
+                    else
+                    {
+                        <option value="@item.ToString()">@item.ToString()</option>
+                    }
+                }
+            </select>
+ 
+            <input style="margin-bottom: 20px;" class="btn btn-dark" type="submit" value="Поиск" class="btn btn-default" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+@{
+    int itemsPerColumn = (int)Math.Ceiling(Model.Books.Count() / 2.0); // Количество элементов в каждом столбце
+}
+<div class="container" style="margin-bottom: 20px;">
+    <div class="row">
+        <div class="col-md-6">
+            @for (int i = 0; i < itemsPerColumn && i < Model.Books.Count(); i++)
+            {
+                var book = Model.Books.ElementAt(i);
+                string[] tailM = @book.ImagePath.Split('.');
+                string imageName = @book.ImageName + "." + @tailM[1];
+                <div class="card mb-3" style="max-width: 100%; background-color: #e8d3b3">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src="/Home/GetImage?imageName=@imageName" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">@book.Name - @book.Author</h5>
+                        @*<p class="card-text">@book.Annotation</p>*@
+                        <p class="card-text"><small class="text-muted">@book.Genres</small></p>
+                        <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="Book" asp-route-bookId="@book.Id" asp-route-name="@book.Name">Подробнее</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            @for (int i = itemsPerColumn; i < Model.Books.Count(); i++)
+            {
+                var book = Model.Books.ElementAt(i);
+                string[] tailM = @book.ImagePath.Split('.');
+                string imageName = @book.ImageName + "." + @tailM[1];
+                <div class="card mb-3" style="max-width: 100%; background-color: #e8d3b3">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src="/Home/GetImage?imageName=@imageName" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">@book.Name - @book.Author</h5>
+                        @*<p class="card-text">@book.Annotation</p>*@
+                        <p class="card-text"><small class="text-muted">@book.Genres</small></p>
+                        <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="Book" asp-route-bookId="@book.Id" asp-route-name="@book.Name">Подробнее</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+@*@foreach (var book in Model.Books)
+{
+    string[] tailM = @book.ImagePath.Split('.');
+    string imageName = @book.ImageName + "." + @tailM[1];
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="/Home/GetImage?imageName=@imageName" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">@book.Name - @book.Author</h5>
+            <p class="card-text">@book.Annotation</p>
+            <p class="card-text"><small class="text-muted">@book.Genres</small></p>
+            <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Book" asp-route-bookId="@book.Id" asp-route-name="@book.Name">Подробнее</a>
+          </div>
+        </div>
+      </div>
+    </div>
+}*@
+
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Books"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)" asp-route-author="@ViewBag.Author" asp-route-name="@ViewBag.Name" asp-route-genre="@ViewBag.Genre" 
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Books"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)" asp-route-author="@ViewBag.Author" asp-route-name="@ViewBag.Name" asp-route-genre="@ViewBag.Genre" 
+       class="btn btn-outline-dark">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
+@*asp-route-genre="document.getElementById("genre").value"*@

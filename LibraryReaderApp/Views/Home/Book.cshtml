@@ -1,0 +1,270 @@
+﻿@using LibraryContracts.ViewModels;
+@model BookViewModel;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .rating {
+          display: inline-block;
+        }
+
+        .stars {
+          font-size: 24px;
+        }
+
+        .star {
+          display: inline-block;
+          margin-right: 2px;
+        }
+
+        .gold-star:before {
+          content: '\2605';
+          color: #ffcc00;
+        }
+
+        .gray-star:before {
+          content: '\2606';
+          color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+@if (TempData["Message"] != null)
+{
+    <div style="position: absolute; z-index: 2; width: 80%; left: 50%; transform: translate(-50%, -50%);" id="myBlock" class="fade-out-transition alert alert-success">
+      @TempData["Message"]
+    </div>
+
+    <style>
+      .fade-out-transition {
+        opacity: 1;
+        transition: opacity 1s;
+      }
+
+      .fade-out-transition.fade-out {
+        opacity: 0;
+      }
+    </style>
+
+    <script>
+      // Через небольшую задержку, добавляем класс для запуска перехода
+      setTimeout(function() {
+        const myBlock = document.getElementById("myBlock");
+        myBlock.classList.add("fade-out");
+      }, 3000);
+
+      // По окончании перехода, убираем блок
+      const myBlock = document.getElementById("myBlock");
+      myBlock.addEventListener("transitionend", function() {
+        myBlock.style.display = "none";
+      });
+    </script>
+}
+
+<div bgcolor="#854f32">
+    <div class="container" style="margin-bottom: 20px;">
+        <div class="row">
+            <div class="col-md-3">
+                @{string[] tailM = @Model.ImagePath.Split('.');
+                string imageName = @Model.ImageName + "." + @tailM[1];}
+                <img src="/Home/GetImage?imageName=@imageName" class="img-fluid rounded-start" alt="...">
+                
+            </div>
+            <div class="col-md-9">
+                <h1>Название: @Model.Name</h1>
+                <h2>Автор: @Model.Author</h2>
+                <p>   @Model.Annotation</p>
+                <h2>Год издания: @Model.Year</h2>
+                <h3>Жанры: @Model.Genres</h3>
+
+                <div class="rating">
+                  <div class="stars"></div>
+                </div>
+                <h5>Эту книгу брали @ViewBag.count раз(а)</h5>
+                @{
+                    if(Session.Reader != null)
+                    {
+                        <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="AddFavoriteBook" asp-route-bookId="@Model.Id" asp-route-readerId="@Session.Reader.Id">Добавить в избранное</a>
+                    }
+                }
+                <script>
+                    function displayRating(rating) {
+                      const starsContainer = document.querySelector('.stars');
+                      starsContainer.innerHTML = '';
+
+                      for (let i = 0; i < 5; i++) {
+                        const star = document.createElement('span');
+                        star.classList.add('star');
+
+                        if (i < rating) {
+                          star.classList.add('gold-star');
+                        } else {
+                          star.classList.add('gray-star');
+                        }
+
+                        starsContainer.appendChild(star);
+                      }
+                    }
+
+                    const rating = @ViewBag.rating; // Ваше число рейтинга
+                    displayRating(rating);
+                </script>
+            </div>
+        </div>
+        <h3>В наличии в библиотеках:</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Адрес
+                    </th>
+                    <th>
+                        В наличии
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.bbDictionary)
+                {
+                    <tr>
+                        <td>
+                            @item.Key
+                        </td>
+                        <td>
+                            @item.Value
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+</body>
+</html>
+
+@*
+    @using LibraryContracts.ViewModels;
+@model BookViewModel;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .rating {
+          display: inline-block;
+        }
+
+        .stars {
+          font-size: 24px;
+        }
+
+        .star {
+          display: inline-block;
+          margin-right: 2px;
+        }
+
+        .gold-star:before {
+          content: '\2605';
+          color: #ffcc00;
+        }
+
+        .gray-star:before {
+          content: '\2606';
+          color: #ccc;
+        }
+    </style>
+</head>
+<body>
+<div bgcolor="#854f32">
+    @{string[] tailM = @Model.ImagePath.Split('.');
+    string imageName = @Model.ImageName + "." + @tailM[1];}
+    <img src="/Home/GetImage?imageName=@imageName" class="img-fluid rounded-start" alt="...">
+    <div class="rating">
+      <div class="stars"></div>
+    </div>
+    <h3>Эту книгу брали @ViewBag.count раз</h3>
+    <h1>@Model.Name</h1>
+    <h1>@Model.Author</h1>
+    <h1>@Model.Annotation</h1>
+    <h1>@Model.Year</h1>
+    <h1>@Model.BookBranches</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Адрес
+                </th>
+                <th>
+                    В наличии
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.bbDictionary)
+            {
+                <tr>
+                    <td>
+                        @item.Key
+                    </td>
+                    <td>
+                        @item.Value
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script>
+        function displayRating(rating) {
+          const starsContainer = document.querySelector('.stars');
+          starsContainer.innerHTML = '';
+
+          for (let i = 0; i < 5; i++) {
+            const star = document.createElement('span');
+            star.classList.add('star');
+
+            if (i < rating) {
+              star.classList.add('gold-star');
+            } else {
+              star.classList.add('gray-star');
+            }
+
+            starsContainer.appendChild(star);
+          }
+        }
+
+        const rating = @ViewBag.rating; // Ваше число рейтинга
+        displayRating(rating);
+    </script>
+
+    @{
+        if(Session.Reader != null)
+        {
+            <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="AddFavoriteBook" asp-route-bookId="@Model.Id" asp-route-readerId="@Session.Reader.Id">Добавить в избранное</a>
+        }
+    }
+
+    <div class="container" style="margin-bottom: 20px;">
+        <div class="row">
+            <div class="col-md-6">
+                
+            </div>
+            <div class="col-md-6">
+                
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>
+*@

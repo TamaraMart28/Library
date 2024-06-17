@@ -1,0 +1,54 @@
+﻿﻿@using LibraryContracts.ViewModels
+
+@model List<BranchViewModel>
+
+@{
+    ViewData["Title"] = "Филиалы";
+}
+
+<div class="text-center">
+    <h3 class="display-4">@ViewData["Title"]</h3>
+</div>
+
+<div class="text-center">
+    @{
+        <br />
+        <p>
+            <a class="btn btn-dark" asp-action="BranchCreate">Создать филиал</a>
+        </p>
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Адрес
+                    </th>
+                    <th>
+                        Расписание
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Schedule)
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-primary" asp-action="BranchUpdate" asp-route-branchId="@item.Id" >Изменить</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-danger" asp-action="BranchDelete" asp-route-branchId="@item.Id">Удалить</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+@*asp-route-librarianId="@item.Id" asp-route-librarianFullName="@item.FullName" 
+                            asp-route-librarianLogin="@item.Login" asp-route-librarianPassword="@item.Password" asp-route-librarianBranchId="@item.BranchId"*@

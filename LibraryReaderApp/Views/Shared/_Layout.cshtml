@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - «Потерянная глава»</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LibraryReaderApp.styles.css" asp-append-version="true" />
+</head>
+<body style="background-color: #c27c51">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm  border-bottom box-shadow mb-3" style="background-color: #7a431f">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/css/img/icon.png"/>
+
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1" >
+                        @{
+                            if(Session.Admin == null)
+                            {
+                                <li class="nav-item">
+                                    <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="Books">Каталог книг</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="Branches">Адреса</a>
+                                </li>
+                            }
+                        }
+                        @{
+                            if(Session.Admin != null)
+                            {
+                                <li class="nav-item">
+                                    <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="Librarians">Библиотекари</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="BranchesAdmin">Филиалы</a>
+                                </li>
+                            }
+                        }
+                        @*<li class="nav-item">
+                                    <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="test">test</a>
+                                </li>*@
+                    </ul>
+                    @{
+                            if(Session.Reader == null && Session.Admin == null)
+                            {
+                                <ul class="navbar-nav" style="justify-content: end;">
+                                    <li class="nav-item">
+                                        <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="RegisterReader">Зарегистрироваться</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="LoginReader">Войти</a>
+                                    </li>
+                                </ul>
+                                
+                            }
+                        }
+                    @{
+                            if(Session.Reader != null)
+                            {
+                                
+                                <ul class="navbar-nav" style="justify-content: end;">
+                                    <li class="nav-item">
+                                        <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Личный кабинет - @Session.Reader.FullName</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="FavoriteBooks">Избранное</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a style="color: #fdf5e6" class="nav-link" asp-area="" asp-controller="Home" asp-action="LogoutReader">Выйти</a>
+                                    </li>
+                                </ul>
+                                
+                            }
+                        }
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        @{
+            if(Session.Admin == null && Session.Reader == null)
+            {
+                <div class="container" style="color: #fdf5e6">
+                    &copy; 2023 - Сеть библиотек «Потерянная глава» - <a style="color: #fdf5e6" asp-area="" asp-controller="Home" asp-action="LoginAdmin">Для админа</a>
+                </div>
+            }
+            if(Session.Admin != null)
+            {
+                <div class="container" style="color: #fdf5e6">
+                    &copy; 2023 - Сеть библиотек «Потерянная глава» - <a style="color: #fdf5e6" asp-area="" asp-controller="Home" asp-action="LogoutAdmin">Выйти</a>
+                </div>
+            }
+        }
+        
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

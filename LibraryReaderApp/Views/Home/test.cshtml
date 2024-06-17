@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Карта Яндекс</title>
+    @*<style>
+        .rating {
+          display: inline-block;
+        }
+
+        .stars {
+          font-size: 40px;
+        }
+
+        .star:before {
+          content: '\2605';
+          color: #ffcc00;
+        }
+
+        .starOff:before {
+          content: '\2605';
+          color: #7d746d;
+        }
+    </style>*@
+    <style>
+        .rating {
+          display: inline-block;
+        }
+
+        .stars {
+          font-size: 24px;
+        }
+
+        .star {
+          display: inline-block;
+          margin-right: 2px;
+        }
+
+        .gold-star:before {
+          content: '\2605';
+          color: #ffcc00;
+        }
+
+        .gray-star:before {
+          content: '\2606';
+          color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    @*<div class="rating">
+      <div class="stars">
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="starOff"></span>
+      </div>
+    </div>*@
+    <div class="rating">
+      <div class="stars"></div>
+    </div>
+
+    <script>
+        function displayRating(rating) {
+          const starsContainer = document.querySelector('.stars');
+          starsContainer.innerHTML = '';
+
+          for (let i = 0; i < 5; i++) {
+            const star = document.createElement('span');
+            star.classList.add('star');
+
+            if (i < rating) {
+              star.classList.add('gold-star');
+            } else {
+              star.classList.add('gray-star');
+            }
+
+            starsContainer.appendChild(star);
+          }
+        }
+
+        const rating = @ViewBag.rating; // Ваше число рейтинга
+        displayRating(rating);
+    </script>
+
+</body>
+</html>
+
+
+
+
+@*РАБОТАЕТ
+@{
+    ViewData["Title"] = "Адреса";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Карта Яндекс</title>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+</head>
+<body>
+    <div class="text-center">
+        <h2 class="display-4">Наши библиотеки</h2>
+    </div>
+    <div id="map" style="width: 100%; height: 500px"></div>
+    <script type="text/javascript">
+        ymaps.ready(init);
+
+        function init() {
+            // Создание карты
+            var myMap = new ymaps.Map("map", {
+                center: [55.76, 37.64],
+                zoom: 5
+            });
+
+            // Получение списка координат маркеров из ViewBag
+            var coordinatesList = JSON.parse('@Html.Raw(ViewBag.CoordinatesListJson)');
+            var infoList = JSON.parse('@Html.Raw(ViewBag.InfoListJson)');
+
+            // Добавление маркеров на карту
+            for (var i = 0; i < coordinatesList.length; i++) {
+                var coordinates = [coordinatesList[i].Item1, coordinatesList[i].Item2];
+                var myPlacemark = new ymaps.Placemark(coordinates, { balloonContent: infoList[i]}, {});
+                myMap.geoObjects.add(myPlacemark);
+            }
+        }
+    </script>
+</body>
+</html>*@
+
+
+@*@using Newtonsoft.Json;
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div id="map" style="height: 500px;"></div>
+
+@section scripts {
+    <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+    <script>
+        var map;
+        DG.then(function () {
+            map = DG.map('map', {
+                center: [55.7558, 37.6173],
+                zoom: 10
+            });
+            var markers = JSON.parse('@Html.Raw(Json.Encode(@Model))'); 
+            for (var i = 0; i < markers.length; i++) {
+                var marker = DG.marker([markers[i].Latitude, markers[i].Longitude]).addTo(map);
+                marker.bindPopup(markers[i].HintContent);
+            }
+            
+        });
+    </script>
+}*@
+
+@*var markers = @Html.Raw(Json.Encode(ViewBag.Markers));
+            for (var i = 0; i < markers.length; i++) {
+                var marker = DG.marker([markers[i].Latitude, markers[i].Longitude]).addTo(map);
+                marker.bindPopup(markers[i].HintContent);
+            }*@
+
+
+@*<!DOCTYPE html>
+<html>
+    <head>
+        <title>Маркеры на карте</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+        <style>
+            #map {
+                height: 600px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Маркеры на карте</h1>
+        <div id="map"></div>
+        <script>
+            function initMap() {
+                // создаем объект карты и указываем его свойства
+                var map = new google.maps.Map(document.getElementById("map"), {
+                    center: { lat: 51.5074, lng: -0.1278 }, //координаты центра карты (Лондон)
+                    zoom: 3 //масштаб карты
+                });
+
+                //добавляем маркеры на карту
+                @foreach (var coordinate in ViewBag.Coordinates)
+                {
+                    <text>
+                        var marker = new google.maps.Marker({
+                        position: { lat: @coordinate.Latitude, lng: @coordinate.Longitude },
+                        map: map,
+                        title: "Маркер"
+                        });
+                    </text>
+                }          
+            }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBNGXDESt4oCjyE0qIKmnyjKqh1T0Eo0y08language=en&region=US"></script>
+    </body>
+</html>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@using Jint;
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - «Потерянная глава»</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LibraryReaderApp.styles.css" asp-append-version="true" />
+</head>
+<body>
+     <script>
+          @{
+                string i = "Привет";
+                string script = @"alert(i);";
+                Engine jsEngine = new Engine().SetValue("i", i).Execute(script);
+                <div>
+                    jhj
+                </div>
+        }
+     </script>
+   
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>*@

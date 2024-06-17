@@ -1,0 +1,65 @@
+﻿﻿@using LibraryContracts.ViewModels
+
+@model List<LibrarianViewModel>
+
+@{
+    ViewData["Title"] = "Библиотекари";
+}
+
+<div class="text-center">
+    <h3 class="display-4">@ViewData["Title"]</h3>
+</div>
+
+<div class="text-center">
+    @{
+        <br />
+        <p>
+            <a class="btn btn-dark" asp-action="LibrarianCreate">Создать библиотекаря</a>
+        </p>
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Полное имя
+                    </th>
+                    <th>
+                        Логин
+                    </th>
+                    <th>
+                        Пароль
+                    </th>
+                    <th>
+                        Филиал
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Login)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Password)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BranchId)
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-primary" asp-action="LibrarianUpdate" asp-route-librarianId="@item.Id" asp-route-librarianFullName="@item.FullName" 
+                            asp-route-librarianLogin="@item.Login" asp-route-librarianPassword="@item.Password" asp-route-librarianBranchId="@item.BranchId">Изменить</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-danger" asp-action="LibrarianDelete" asp-route-librarianId="@item.Id">Удалить</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

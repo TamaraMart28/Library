@@ -1,0 +1,105 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Избранное";
+}
+
+<div class="text-center" style="margin-bottom: 20px;">
+    <h2 class="display-4">@ViewData["Title"]</h2>
+</div>
+
+@{
+    int itemsPerColumn = (int)Math.Ceiling(Model.Books.Count() / 2.0); // Количество элементов в каждом столбце
+}
+<div class="container" style="margin-bottom: 20px;">
+    <div class="row">
+        <div class="col-md-6">
+            @for (int i = 0; i < itemsPerColumn && i < Model.Books.Count(); i++)
+            {
+                var book = Model.Books.ElementAt(i);
+                string[] tailM = @book.ImagePath.Split('.');
+                string imageName = @book.ImageName + "." + @tailM[1];
+                <div class="card mb-3" style="max-width: 100%; background-color: #e8d3b3">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src="/Home/GetImage?imageName=@imageName" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">@book.Name - @book.Author</h5>
+                        @*<p class="card-text">@book.Annotation</p>*@
+                        <p class="card-text"><small class="text-muted">@book.Genres</small></p>
+                        <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="Book" asp-route-bookId="@book.Id" asp-route-name="@book.Name">Подробнее</a>
+                        <a class="btn btn-secondary" asp-area="" asp-controller="Home" asp-action="DeleteFavoriteBook" asp-route-bookId="@book.Id">Удалить</a>  
+                    </div>
+                    </div>
+                  </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            @for (int i = itemsPerColumn; i < Model.Books.Count(); i++)
+            {
+                var book = Model.Books.ElementAt(i);
+                string[] tailM = @book.ImagePath.Split('.');
+                string imageName = @book.ImageName + "." + @tailM[1];
+                <div class="card mb-3" style="max-width: 100%; background-color: #e8d3b3">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src="/Home/GetImage?imageName=@imageName" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">@book.Name - @book.Author</h5>
+                        @*<p class="card-text">@book.Annotation</p>*@
+                        <p class="card-text"><small class="text-muted">@book.Genres</small></p>
+                        <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="Book" asp-route-bookId="@book.Id" asp-route-name="@book.Name">Подробнее</a>
+                        <a class="btn btn-secondary" asp-area="" asp-controller="Home" asp-action="DeleteFavoriteBook" asp-route-bookId="@book.Id">Удалить</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@*@foreach (var book in Model.Books)
+{
+    string[] tailM = @book.ImagePath.Split('.');
+    string imageName = @book.ImageName + "." + @tailM[1];
+    
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="/Home/GetImage?imageName=@imageName" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">@book.Name - @book.Author</h5>
+            <p class="card-text">@book.Annotation</p>
+            <p class="card-text"><small class="text-muted">@book.Genres</small></p>
+            <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="Book" asp-route-bookId="@book.Id">Подробнее</a>
+            <a class="btn btn-secondary" asp-area="" asp-controller="Home" asp-action="DeleteFavoriteBook" asp-route-bookId="@book.Id">Удалить</a>
+          </div>
+        </div>
+      </div>
+    </div>
+}*@
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="FavoriteBooks"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)" 
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="FavoriteBooks"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)" 
+       class="btn btn-outline-dark">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
